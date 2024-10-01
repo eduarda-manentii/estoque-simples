@@ -1,23 +1,17 @@
 package br.com.eduarda.simplestock.controlls;
 
 
-import br.com.eduarda.simplestock.MainWindowApplication;
 import br.com.eduarda.simplestock.Measurements;
-import br.com.eduarda.simplestock.models.Product;
+import br.com.eduarda.simplestock.Product;
 import br.com.eduarda.simplestock.models.Stock;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;

@@ -1,5 +1,7 @@
 package br.com.eduarda.simplestock.models;
 
+import br.com.eduarda.simplestock.Product;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,4 @@
-package br.com.eduarda.simplestock.models;
-
-import br.com.eduarda.simplestock.Measurements;
+package br.com.eduarda.simplestock;
 
 public class Product {
 
