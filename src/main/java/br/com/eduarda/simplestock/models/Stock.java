@@ -26,6 +26,10 @@ public class Stock {
         products.add(product);
     }
 
+    public void remove(Product product) {
+        products.remove(product);
+    }
+
     public List<Product> getList() {
         return products;
     }

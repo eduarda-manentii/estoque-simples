@@ -14,8 +14,8 @@
          <bottom>
             <AnchorPane prefHeight="75.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="saveButton" layoutX="249.0" layoutY="25.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="192.0" text="Salvar" />
-                  <Button fx:id="cancelButton" layoutX="46.0" layoutY="25.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="189.0" text="Cancelar" />
+                  <Button fx:id="saveButton" layoutX="249.0" layoutY="25.0" mnemonicParsing="false" onAction="#onButtonSaveClicked" prefHeight="25.0" prefWidth="192.0" text="Salvar" />
+                  <Button fx:id="cancelButton" layoutX="46.0" layoutY="25.0" mnemonicParsing="false" onAction="#onButtonCancelClicked" prefHeight="25.0" prefWidth="189.0" text="Cancelar" />
                </children>
             </AnchorPane>
          </bottom>

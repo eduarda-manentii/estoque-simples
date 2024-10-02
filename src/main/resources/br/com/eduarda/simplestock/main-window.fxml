@@ -21,9 +21,9 @@
       <Button fx:id="searchButton" layoutX="467.0" layoutY="115.0" mnemonicParsing="false" onAction="#filter" prefHeight="27.0" prefWidth="101.0" text="Filtrar" />
       <ComboBox fx:id="measureCbb" layoutX="289.0" layoutY="116.0" prefHeight="25.0" prefWidth="163.0" promptText="Escolha uma medida" />
       <Label fx:id="measureLabel" layoutX="289.0" layoutY="94.0" text="Medida" />
-      <Button fx:id="insertButton" layoutX="461.0" layoutY="346.0" mnemonicParsing="false" onAction="#cadastrar" prefHeight="27.0" prefWidth="113.0" text="Cadastrar" />
-      <Button fx:id="editButton" layoutX="339.0" layoutY="346.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="113.0" text="Editar" />
-      <Button fx:id="removeButton" layoutX="216.0" layoutY="346.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="113.0" text="Remover" />
+      <Button fx:id="insertButton" layoutX="461.0" layoutY="346.0" mnemonicParsing="false" onAction="#onButtonInsertClicked" prefHeight="27.0" prefWidth="113.0" text="Cadastrar" />
+      <Button fx:id="editButton" layoutX="339.0" layoutY="346.0" mnemonicParsing="false" onAction="#onEditButtonClicked" prefHeight="27.0" prefWidth="113.0" text="Editar" />
+      <Button fx:id="removeButton" layoutX="216.0" layoutY="346.0" mnemonicParsing="false" onAction="#onRemoveButtonClicked" prefHeight="27.0" prefWidth="113.0" text="Remover" />
       <TableView fx:id="productsTable" layoutX="48.0" layoutY="160.0" prefHeight="175.0" prefWidth="524.0">
         <columns>
           <TableColumn fx:id="columnId" prefWidth="90.0" text="Código" />

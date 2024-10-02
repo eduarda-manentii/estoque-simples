@@ -30,21 +30,32 @@ public class ProductFormController implements Initializable {
     @FXML
     private Button cancelButton;
 
+    private Product selectedProduct;
+
     @FXML
-    void save() {
+    void onButtonSaveClicked() {
         try {
             validate();
-            Product product = new Product(Double.parseDouble(amountTextField.getText()), measureCbb.getValue(), descriptionTextField.getText());
             Stock instance = Stock.getInstance();
-            instance.add(product);
-            cancel();
+            if (selectedProduct != null) {
+                instance.remove(selectedProduct);
+                selectedProduct.setDescription(descriptionTextField.getText());
+                selectedProduct.setAmount(Double.parseDouble(amountTextField.getText()));
+                selectedProduct.setMeasurements(measureCbb.getValue());
+                instance.add(selectedProduct);
+                selectedProduct = null;
+            } else {
+                Product product = new Product(Double.parseDouble(amountTextField.getText()), measureCbb.getValue(), descriptionTextField.getText());
+                instance.add(product);
+            }
+            onButtonCancelClicked();
         } catch (Exception e) {
             showMessage(e.getMessage());
         }
     }
 
     @FXML
-    void cancel() {
+    void onButtonCancelClicked() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
@@ -68,7 +79,7 @@ public class ProductFormController implements Initializable {
     }
 
     private void validate() {
-        if(descriptionTextField.getText().isEmpty()) {
+        if (descriptionTextField.getText().isEmpty()) {
             throw new NullPointerException("A descrição é obrigatória");
         }
         if (measureCbb.getSelectionModel().isEmpty()) {
@@ -76,9 +87,16 @@ public class ProductFormController implements Initializable {
         }
         try {
             Double.parseDouble(amountTextField.getText());
-        }catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new NumberFormatException("Apenas números são aceitos na quantidade!");
         }
+    }
+
+    public void setAttributes(Product selectedProduct) {
+        this.selectedProduct = selectedProduct;
+        descriptionTextField.setText(selectedProduct.getDescription());
+        measureCbb.setValue(selectedProduct.getMeasurements());
+        amountTextField.setText(String.valueOf(selectedProduct.getAmount()));
     }
 
 }

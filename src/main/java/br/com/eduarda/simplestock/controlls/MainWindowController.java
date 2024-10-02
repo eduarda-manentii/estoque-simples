@@ -14,32 +14,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+
+import javafx.event.ActionEvent;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
 public class MainWindowController implements Initializable {
-
-    @FXML
-    private Button editButton;
-
-    @FXML
-    private Label filterLabel;
 
     @FXML
     private TextField filterNameTextField;
 
     @FXML
-    private Button insertButton;
-
-    @FXML
     private ComboBox<Measurements> measureCbb;
-
-    @FXML
-    private Label measureLabel;
 
     @FXML
     private TableView<Product> productsTable;
@@ -57,16 +49,7 @@ public class MainWindowController implements Initializable {
     private TableColumn<Product, String> columnAmount;
 
     @FXML
-    private Button removeButton;
-
-    @FXML
-    private Button searchButton;
-
-    @FXML
-    private Label stockControlLabel;
-
-    @FXML
-    void cadastrar() throws IOException {
+    void onButtonInsertClicked() throws IOException {
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/br/com/eduarda/simplestock/product-form.fxml")));
         Stage popup = new Stage();
         popup.setTitle("");
@@ -76,9 +59,42 @@ public class MainWindowController implements Initializable {
         productsTable.setItems(initialData());
     }
 
+    @FXML
+    void onEditButtonClicked() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/com/eduarda/simplestock/product-form.fxml"));
+        Parent root = loader.load();
+        ProductFormController productController = loader.getController();
+        Product selectedProduct = productsTable.getSelectionModel().getSelectedItem();
+        if (selectedProduct == null) {
+            warningMessage();
+        } else {
+            productController.setAttributes(selectedProduct);
+            Scene scene = new Scene(root);
+            Stage popup = new Stage();
+            popup.setTitle("");
+            popup.setScene(scene);
+            popup.showAndWait();
+            productsTable.setItems(initialData());
+            productsTable.refresh();
+        }
+    }
+
+    @FXML
+    void onRemoveButtonClicked() {
+        Product selectedProduct = productsTable.getSelectionModel().getSelectedItem();
+        if (selectedProduct == null) {
+            warningMessage();
+        } else {
+            Stock stock = Stock.getInstance();
+            confirmationMessage(() -> {
+                stock.remove(selectedProduct);
+                productsTable.setItems(initialData());
+            });
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         initializeDropDown();
         initializeTableColumns();
     }
@@ -95,13 +111,12 @@ public class MainWindowController implements Initializable {
         columnDesc.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getDescription()));
         columnMeasur.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getMeasurements().getDescription()));
         columnAmount.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getAmount().toString()));
-
         productsTable.setItems(initialData());
     }
 
     ObservableList<Product> initialData() {
-        Stock instance = Stock.getInstance();
-        return FXCollections.observableList(instance.getList());
+        Stock stock = Stock.getInstance();
+        return FXCollections.observableList(stock.getList());
     }
 
     public void filter() {
@@ -130,4 +145,29 @@ public class MainWindowController implements Initializable {
             productsTable.setItems(initialData());
         }
     }
+
+    private void warningMessage() {
+        ButtonType loginButtonType = new ButtonType("Ok!", ButtonBar.ButtonData.OK_DONE);
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Aviso!");
+        dialog.setContentText("Selecione um produto.");
+        dialog.getDialogPane().getButtonTypes().add(loginButtonType);
+        boolean disabled = false;
+        dialog.getDialogPane().lookupButton(loginButtonType).setDisable(disabled);
+        dialog.showAndWait();
+    }
+
+    private void confirmationMessage(Runnable action) {
+        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+        ButtonType btnYes = new ButtonType("Sim");
+        ButtonType btnNo = new ButtonType("Não");
+        dialog.setContentText("Tem certeza que deseja remover?");
+        dialog.getButtonTypes().setAll(btnYes, btnNo);
+        dialog.showAndWait().ifPresent(b -> {
+            if (b == btnYes) {
+                action.run();
+            }
+        });
+    }
+
 }
