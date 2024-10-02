@@ -85,7 +85,8 @@ public class MainWindowController implements Initializable {
 
     private void initializeDropDown() {
         List<Measurements> list = Arrays.asList(Measurements.values());
-        ObservableList<Measurements> obList = FXCollections.observableList(list);
+        ObservableList<Measurements> obList = FXCollections.observableArrayList(list);
+        obList.add(0, null);
         measureCbb.setItems(obList);
     }
 
@@ -104,17 +105,29 @@ public class MainWindowController implements Initializable {
     }
 
     public void filter() {
-        if (!filterNameTextField.getText().isBlank()) {
-            Stock instance = Stock.getInstance();
+        List<Product> products = Stock.getInstance().getList();
 
-            productsTable.setItems(FXCollections.observableList(instance.getList()
-                    .stream()
-                    .filter(value -> value.getDescription().equals(filterNameTextField.getText()))
-                    .toList()));
+        boolean isInformed = !filterNameTextField.getText().isBlank();
+        boolean isSelected = measureCbb.getValue() != null;
+
+        if (isInformed || isSelected) {
+            if (isInformed) {
+                products = products
+                        .stream()
+                        .filter(value -> value.getDescription().equals(filterNameTextField.getText()))
+                        .toList();
+            }
+
+            if (isSelected) {
+                products = products
+                        .stream()
+                        .filter(value -> value.getMeasurements().getDescription().equals(measureCbb.getValue().getDescription()))
+                        .toList();
+            }
+
+            productsTable.setItems(FXCollections.observableList(products));
         } else {
             productsTable.setItems(initialData());
         }
-
-        //TODO fazer validação da comboBox
     }
 }
