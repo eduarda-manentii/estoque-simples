@@ -11,6 +11,8 @@ public class Stock {
 
     private static ArrayList<Product> products;
 
+    private static Integer id = 0;
+
     private Stock() {
     }
 
@@ -23,6 +25,10 @@ public class Stock {
     }
 
     public void add(Product product) {
+        if (product.getId() == null) {
+            product.setId(++id);
+        }
+
         products.add(product);
     }
 

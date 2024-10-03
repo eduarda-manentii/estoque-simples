@@ -11,7 +11,6 @@ public class Product {
         this.amount = amount;
         this.measurements = measurements;
         this.description = description;
-        this.id = 1; //TODO: fazer gerar um número aleatório
     }
 
     public void setDescription(String description) {
